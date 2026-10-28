@@ -1,23 +1,23 @@
 import pytest
-def test_pass():
+def test_pass():   #passed
     pass
-def test_fail():
+def test_fail():   #failed
     assert False
 
 @pytest.fixture
-def f():
+def f():   #error
     1+'1'
 def test_error(f):
     pass
 
 @pytest.mark.skip
-def test_skip():
+def test_skip():   # skipped
     pass
 
 @pytest.mark.xfail
-def test_xfail():
+def test_xfail(): #xfailed
     assert False
 
 @pytest.mark.xfail
-def test_xfass():
-    assert 1 == 1
+def test_xpass():
+    assert 1 == 1  #xpassed
