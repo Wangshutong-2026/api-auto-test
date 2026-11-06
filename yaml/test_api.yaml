@@ -1,0 +1,13 @@
+---
+name: 访问百度
+steps:
+  - request: #发送请求
+      method:GET
+      url:http://www.baidu.com
+  - response: #断言响应
+      status_code:200
+      text:'**baidu**'
+  - extract: #提取变量
+      code:[status_code,(.*)]
+  - validate: #断言变量
+      code:200
