@@ -1,0 +1,58 @@
+"""
+@FileName: test_api.py
+"""
+import requests
+# 第一类（底层都是调用第二类请求方式）
+requests.get()   #ctrl+左键，可查看源代码（py文件下）
+
+res = requests.get(url="",params=None)
+print(res.status_code)  #响应码
+print(res.text)         #字符串
+print(res.json())       #字典格式
+print(res.headers)      #响应头
+print(res.cookies)      #Cookie登录状态
+print(res.content)      #二进制
+
+
+requests.post()
+requests.put()
+requests.delete()
+
+
+# *args 不定长，元组
+# **kwargs  不定长，字典
+
+
+# 第二类（底层是调用第三类请求方式）
+requests.request()
+
+# 第三类(只用这种，保存会话，保存登录状态)
+s = requests.session()
+s.request(
+    self,
+
+    请求方式：
+    method: str,
+
+    请求地址：
+    url: _t.UriType,
+
+    # 四种参数
+    params: _t.ParamsType = None,   #查询字符串参数，在请求地址后面以?传递的参数
+    data: _t.DataType = None,       #表单参数，在接口文档中是表格形式，然后不是查询字符串参数
+    json: _t.JsonType = None,       #Json参数：{"tag":{"name":"广东"}}
+    files: _t.FilesType = None,     #Files参数：一般有说明
+
+    请求头：
+    headers: _t.HeadersType = None,
+
+    auth: _t.AuthType = None,
+    timeout: _t.TimeoutType = None,
+    allow_redirects: bool = True,
+    proxies: dict[str, str] | None = None,
+    hooks: _t.HooksInputType | None = None,
+    stream: bool | None = None,
+    verify: _t.VerifyType | None = None,
+    cert: _t.CertType = None,
+    cookies: RequestsCookieJar | CookieJar | dict[str, str] | None = None,
+)
