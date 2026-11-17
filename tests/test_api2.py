@@ -5,6 +5,7 @@ import re
 import jsonpath
 import pytest
 import requests
+from public.request_util import RequestUtil
 
 # fixture，整个测试类共用同一个session，cookie互通
 @pytest.fixture(scope="class")
@@ -17,7 +18,7 @@ class TestApi:
     def test_phpwind_start(self, sess):
         method = "get"
         url = "http://47.107.116.139/phpwind/"
-        res = sess.request(url=url, method=method)
+        res = RequestUtil().send_all_request(url=url, method=method)
         print("首页状态码：", res.status_code)
         assert res.status_code == 200
         assert "phpwind" in res.text
@@ -56,7 +57,7 @@ class TestApi:
         print("登录返回内容：", res.text)
         assert "CSRF verification failed" not in res.text
 
-    # 用例3：微信获取access_token + 文件上传
+    # 用例3：获取access_token + 文件上传
     def test_fileupload(self, sess):
         # 第一步：获取鉴权码 access_token
         get_token_url = "https://api.weixin.qq.com/cgi-bin/token"
@@ -79,7 +80,6 @@ class TestApi:
         upload_params = {
             "access_token": access_token
         }
-        # ⚠️ 改成你电脑上真实图片路径
         files = {
             "media": open("D:\图片\黄.jpg", "rb")
         }
