@@ -95,6 +95,37 @@ class TestApi:
         finally:
             files["media"].close()
 
+# 接口自动化测试框架封装之思路整理
+
+# 1. 新建一个项目，然后安装 requests 库
+# 2. 创建模块或类
+# 3. 创建用例
+# 　请求四要素和响应四要素
+# 　记得要使用 session 发请求
+# 4. 如果需要接口关联
+# 　正则和 JsonPath
+# 5. 检查响应数据
+#
+# 任何一个接口请求四要素和响应四要素的值是不一样的。但是传值的方式和得到响应的方式是一样的。
+#
+# 请求：
+# 请求方式 method,
+# 请求地址 url,
+# 四种参数：
+# 　params=None, 查询字符串参数，在请求地址后面以？传递的参数
+# 　data=None, 表单参数，在接口文档中是表格形式，然后不是查询字符串参数
+# 　json=None, Json 参数：{"tag":{"name":"广东"}}，由 {} 或 [] 组成的字符串
+# 　files=None, Files 参数：一般有说明
+# 请求头
+# 　headers=None,
+
+# 响应
+# print(res.status_code) #响应码
+# print(res.headers)     #响应头
+# print(res.cookies)     #Cookie登录状态
+# print(res.text)        #字符串
+# print(res.json())      #字典格式
+
 #
 # """
 # 踩坑记录：
