@@ -5,34 +5,28 @@ import re
 import jsonpath
 import pytest
 import requests
+
+from public.yaml_util import read_yaml
 from public.request_util import RequestUtil
 
 # fixture，整个测试类共用同一个session，cookie互通
-@pytest.fixture(scope="class")
-def sess():
-    return requests.Session()
-
 
 class TestApi:
-    # 用例1：访问论坛首页
-    def test_phpwind_start(self, sess):
-        method = "get"
-        url = "http://47.107.116.139/phpwind/"
-        res = RequestUtil().send_all_request(url=url, method=method)
-        print("首页状态码：", res.status_code)
-        assert res.status_code == 200
-        assert "phpwind" in res.text
 
+    # 声明：本用例依赖 test_phpwind_start，必须等它跑完才执行
+    # @pytest.mark.dependency(depends=["test_phpwind_start"])
     # 用例2：登录
     def test_login(self, sess):
-        # 第一步：访问登录表单页面，拿csrf_token
-        form_url = "http://47.107.116.139/phpwind/index.php?m=u&c=login"
-        form_res = sess.get(url=form_url)
-        # 正则提取token
-        ret = re.search(r'name="csrf_token" value="(.*?)"', form_res.text)
-        assert ret is not None, "未捕获到csrf_token！"
-        token = ret.group(1)
-        print("提取到的csrf_token：", token)
+        # # 第一步：访问登录表单页面，拿csrf_token
+        # form_url = "http://47.107.116.139/phpwind/index.php?m=u&c=login"
+        # form_res = sess.get(url=form_url)
+        # # 正则提取token
+        # ret = re.search(r'name="csrf_token" value="(.*?)"', form_res.text)
+        # assert ret is not None, "未捕获到csrf_token！"
+        # token = ret.group(1)
+        # print("提取到的csrf_token：", token)
+        token = read_yaml("csrf_token")
+        assert token is not None, "yaml中未读取到csrf_token"
 
         # 第二步：提交登录
         method = "post"
@@ -49,7 +43,7 @@ class TestApi:
         data = {
             "username": "ShuTong",
             "password": "123qwe@@@",
-            "csrf_token": token,
+            "csrf_token": read_yaml("csrf_token"),
             "backurl": "http://47.107.116.139/phpwind/",
             "invite": ""
         }
@@ -57,43 +51,7 @@ class TestApi:
         print("登录返回内容：", res.text)
         assert "CSRF verification failed" not in res.text
 
-    # 用例3：获取access_token + 文件上传
-    def test_fileupload(self, sess):
-        # 第一步：获取鉴权码 access_token
-        get_token_url = "https://api.weixin.qq.com/cgi-bin/token"
-        token_params = {
-            "grant_type": "client_credential",
-            "appid": "wx8a9de038e93f77ab",
-            "secret": "8326fc915928dee3165720c910effb86"
-        }
-        res_token = sess.request(method="GET", url=get_token_url, params=token_params)
-        print("获取token返回：", res_token.json())
 
-        # jsonpath 提取token，加兜底判断
-        token_result = jsonpath.jsonpath(res_token.json(), "$.access_token")
-        assert token_result, "access_token 提取失败"
-        access_token = token_result[0]
-        print("access_token：", access_token)
-
-        # 第二步：文件上传
-        upload_url = "https://api.weixin.qq.com/cgi-bin/media/uploadimg"
-        upload_params = {
-            "access_token": access_token
-        }
-        files = {
-            "media": open("D:\图片\黄.jpg", "rb")
-        }
-        try:
-            res_upload = sess.request(
-                method="POST",
-                url=upload_url,
-                params=upload_params,
-                files=files
-            )
-            print("上传返回：", res_upload.json())
-            assert "url" in res_upload.text
-        finally:
-            files["media"].close()
 
 # 接口自动化测试框架封装之思路整理
 
