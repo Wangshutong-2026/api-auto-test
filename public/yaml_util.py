@@ -19,3 +19,9 @@ def read_yaml(key):
 def delete_yaml():
     with open('./extract.yaml', encoding="utf-8", mode='w') as f:
         f.truncate()
+
+# 读取测试用例的方法
+def read_case(path):
+    with open(path,encoding="utf-8",mode='r') as f:
+        all_value = yaml.load(stream=f,Loader=yaml.FullLoader)
+        return all_value
