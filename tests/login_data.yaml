@@ -5,7 +5,9 @@
   testcase: 正确密码登录
   request:
     method: POST
+    method1: GET
     url: "http://47.107.116.139/phpwind/index.php"
+    url1 : "http://47.107.116.139/phpwind/index.php?m=u&c=login"
     params:
       "m": "u"
       "c": "login"
