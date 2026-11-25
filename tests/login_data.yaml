@@ -21,8 +21,33 @@
       "csrf_token": "csrf_token"
       "backurl": "http://47.107.116.139/phpwind/"
       "invite": ""
+    expected:
+      state: "success"
 
-
-
+-
+  # - 代表列表
+  module: tests
+  api: 登录名称
+  testcase: 正确密码登录
+  request:
+    method: POST
+    method1: GET
+    url: "http://47.107.116.139/phpwind/index.php"
+    url1 : "http://47.107.116.139/phpwind/index.php?m=u&c=login"
+    params:
+      "m": "u"
+      "c": "login"
+      "a": "dorun"
+    headers:
+      "Accept": "application/json, text/javascript, */*; q=0.01"
+      "X-Requested-With": "XMLHttpRequest"
+    data:
+      "username": "ShuTong"
+      "password": "11111"
+      "csrf_token": "csrf_token"
+      "backurl": "http://47.107.116.139/phpwind/"
+      "invite": ""
+    expected:
+      state: "fail"
 
 
