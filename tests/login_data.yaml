@@ -21,8 +21,8 @@
       "csrf_token": "csrf_token"
       "backurl": "http://47.107.116.139/phpwind/"
       "invite": ""
-    expected:
-      state: "success"
+  expected:
+    state: "success"
 
 -
   # - 代表列表
@@ -47,7 +47,7 @@
       "csrf_token": "csrf_token"
       "backurl": "http://47.107.116.139/phpwind/"
       "invite": ""
-    expected:
-      state: "fail"
+  expected:
+    state: "fail"
 
 

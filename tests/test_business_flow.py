@@ -1,14 +1,19 @@
 import re
-
+import allure
 import pytest
 import requests
 
 from public.request_util import RequestUtil
 from public.yaml_util import read_case, read_yaml, write_yaml
 
+@allure.feature("登录业务模块")
 
 class TestLogin:
+
+    @allure.story("多接口依赖登录流测试")
+    @allure.title("测试正常与异常登录，并校验返回状态")
     @pytest.mark.parametrize("login_password",read_case("tests/login_data.yaml"))
+
     def test_login(self,login_password):
         #导入数据
         method = login_password["request"]["method"]
